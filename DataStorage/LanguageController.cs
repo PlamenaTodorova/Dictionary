@@ -89,12 +89,24 @@ namespace DataStorage
         #region Remove
 
         //Remove Word
+        public void RemoveWord(int id)
+        {
+            Word view = views.FirstOrDefault(v => v.ID == id);
+            Word chosen = words.FirstOrDefault(w => w.ID == id);
 
-        #endregion
+            if (view != null)
+            {
+                views.Remove(view);
 
-        #region Change
-        //Change Word
-        public void ChangeWord(int id, WordBindingModel model)
+                words.Remove(chosen);
+                SaveChanges();
+            }
+        }
+            #endregion
+
+            #region Change
+            //Change Word
+            public void ChangeWord(int id, WordBindingModel model)
         {
             Word view = views.FirstOrDefault(v => v.ID == id);
             Word chosen = words.FirstOrDefault(w => w.ID == id);
@@ -118,7 +130,6 @@ namespace DataStorage
                 SaveChanges();
             }
         }
-
         #endregion
     }
 }
