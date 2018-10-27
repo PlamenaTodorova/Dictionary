@@ -41,6 +41,11 @@ namespace DataStorage
         {
             return current.GetWords();
         }
+
+        public WordBindingModel GetWord(int id)
+        {
+            return current.GetWord(id);
+        }
         #endregion
 
         #region Add
@@ -96,7 +101,10 @@ namespace DataStorage
 
         #region Change
         //Change Word
-
+        public void ChangeWord(int id, WordBindingModel model)
+        {
+            this.current.ChangeWord(id, model);
+        }
         #endregion
     }
 }
