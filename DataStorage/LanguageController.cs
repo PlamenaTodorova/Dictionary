@@ -3,6 +3,7 @@ using Models.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace DataStorage
 {
@@ -37,6 +38,21 @@ namespace DataStorage
         public ObservableCollection<Word> GetWords()
         {
             return views;
+        }
+
+        //Get Word
+        public WordBindingModel GetWord(int id)
+        {
+            Word chosen = words.FirstOrDefault(w => w.ID == id);
+
+            WordBindingModel model = new WordBindingModel()
+            {
+                ForaignWord = chosen.ForeignWord,
+                Meaning = chosen.Meaning,
+                Gender = chosen.Gender
+            };
+
+            return model;
         }
         #endregion
 
@@ -78,6 +94,30 @@ namespace DataStorage
 
         #region Change
         //Change Word
+        public void ChangeWord(int id, WordBindingModel model)
+        {
+            Word view = views.FirstOrDefault(v => v.ID == id);
+            Word chosen = words.FirstOrDefault(w => w.ID == id);
+
+            if (view != null)
+            {
+                views.Remove(view);
+
+                view.ForeignWord = model.ForaignWord;
+                view.Meaning = model.Meaning;
+                view.Gender = model.Gender;
+
+                HelperFunctions.PutInTheRightPlace(views, view);
+
+                chosen.ForeignWord = model.ForaignWord;
+                chosen.Meaning = model.Meaning;
+                chosen.Gender = model.Gender;
+
+                words.Sort();
+
+                SaveChanges();
+            }
+        }
 
         #endregion
     }
