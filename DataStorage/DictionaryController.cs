@@ -96,6 +96,10 @@ namespace DataStorage
         //Remove Language
 
         //Remove Word
+        public void RemoveWord(int id)
+        {
+            this.current.RemoveWord(id);
+        }
 
         #endregion
 
