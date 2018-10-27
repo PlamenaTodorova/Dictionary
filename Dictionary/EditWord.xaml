@@ -1,0 +1,57 @@
+﻿<Window x:Class="Dictionary.EditWord"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Dictionary"
+        xmlns:models="clr-namespace:Models.DataModels;assembly=Models"
+        xmlns:utilities="clr-namespace:Dictionary.Utilities"
+        mc:Ignorable="d"
+        Background="LightGray"
+        Title="EditWord" Height="450" Width="800">
+    <Grid VerticalAlignment="Center">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0">
+            <Button Content="Back" Padding="8" 
+                    Margin="10 10"
+                    IsCancel="True"
+                    HorizontalAlignment="Center"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1">
+            <!--Title-->
+            <TextBlock Text="Edit word:" Margin="10 0" FontSize="30"/>
+
+            <!--Foreigh word-->
+            <TextBlock Text="Foreign word:" Margin="10"/>
+            <TextBox Name="foraignWord" Text="{Binding ForaignWord}" Margin="10 0"/>
+
+            <!--It's meaning word-->
+            <TextBlock Text="Meaning:" Margin="10"/>
+            <TextBox Name="meaning" Text="{Binding Meaning}" Margin="10 0"/>
+
+            <!--Gender-->
+            <StackPanel Orientation="Horizontal" Margin="0 15">
+                <TextBlock Text="Gender:" Margin="10"/>
+                <ComboBox 
+                    ItemsSource="{Binding Source={utilities:EnumBindingSource {x:Type models:Gender}}}"
+                    SelectedValue="{Binding Gender}" 
+                    SelectedIndex="0"
+                    Margin="10 10" 
+                    Width="200"/>
+            </StackPanel>
+
+            <!--Send button-->
+            <Button Content="Done!" 
+                    HorizontalAlignment="Center" 
+                    Name="btnDone" 
+                    IsDefault="True"
+                    Click="AddWord_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
