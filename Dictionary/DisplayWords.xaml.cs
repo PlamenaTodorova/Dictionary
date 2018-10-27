@@ -72,7 +72,16 @@ namespace Dictionary
 
         private void Remove_Click(object sender, RoutedEventArgs e)
         {
+            string stringId =
+                ((TextBlock)
+                ((Grid)
+                ((Border)
+                (((StackPanel)
+                ((Button)sender).Parent).Parent)).Parent).Children[0]).Text;
 
+            int id = int.Parse(stringId);
+
+            controller.RemoveWord(id);
         }
 
         private void LanguageSelected(object sender, SelectionChangedEventArgs e)
@@ -89,4 +98,3 @@ namespace Dictionary
         }
     }
 }
-
