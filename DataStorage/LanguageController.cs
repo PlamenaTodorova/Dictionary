@@ -1,7 +1,8 @@
-﻿using Models.BindingModels;
+using Models.BindingModels;
 using Models.DataModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace DataStorage
 {
@@ -9,6 +10,7 @@ namespace DataStorage
     {
         private Language languageInfo;
         private List<Word> words;
+        private ObservableCollection<Word> views;
 
         public LanguageController(Language language)
         {
@@ -16,6 +18,7 @@ namespace DataStorage
             {
                 this.languageInfo = language;
                 this.words = JSONParser<Word>.ReadJson(Constants.FileFolder + this.languageInfo.ID + Constants.Extension);
+                this.views = new ObservableCollection<Word>(this.words);
             }
             else
             {
@@ -31,9 +34,9 @@ namespace DataStorage
         #region Get
 
         //Get Chosen language
-        public List<Word> GetWords()
+        public ObservableCollection<Word> GetWords()
         {
-            return words;
+            return views;
         }
         #endregion
 
@@ -54,6 +57,7 @@ namespace DataStorage
 
             words.Sort();
 
+            HelperFunctions.PutInTheRightPlace(views, newWord);
             SaveChanges();
         }
 
