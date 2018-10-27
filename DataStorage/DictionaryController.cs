@@ -1,72 +1,102 @@
-using DataStorage;
 using Models.BindingModels;
+using Models.DataModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
-namespace Dictionary
+namespace DataStorage
 {
-    /// <summary>
-    /// Interaction logic for DisplayWords.xaml
-    /// </summary>
-    public partial class DisplayWords : Window
+    public class DictionaryController
     {
-        private DictionaryController controller;
+        private List<Language> languages;
+        private LanguageController current;
 
-        public DisplayWords(DictionaryController controller)
+        public DictionaryController()
         {
-            this.controller = controller;
-
-            InitializeComponent();
-
-            pickLanguage.ItemsSource = controller.GetLanguages();
-            words.ItemsSource = controller.GetWords();
+            languages = JSONParser<Language>.ReadJson(Constants.FileFolder + Constants.MainFile);
         }
 
-        private void BackToStartMenu_Click(object sender, RoutedEventArgs e)
+        #region Get
+
+        //Get Languages collection
+        public List<Language> GetLanguages()
         {
-            MainWindow window = new MainWindow(controller);
-            window.Show();
-            this.Close();
+            return this.languages;
         }
 
-        private void AddWord_Click(object sender, RoutedEventArgs e)
+        //Set chosen language
+        public void SetLanguage(int id)
         {
-            AddWord addWord = new AddWord();
+            Language selected = languages.FirstOrDefault(e => e.ID == id);
 
-            addWord.ShowDialog();
+            if (selected != null)
+                current = new LanguageController(selected);
+            else
+                current = null;
+        }
 
-            if (addWord.DialogResult == true)
+        //Get Chosen language
+        public ObservableCollection<Word> GetWords()
+        {
+            return current.GetWords();
+        }
+        #endregion
+
+        #region Add
+
+        //Add Language
+        public void AddLanguage(NewLanguageBindingModel model)
+        {
+            //Creating the Id
+            int newID = GenerateId();
+
+            //Generating the new Language
+            Language newLanguage = new Language()
             {
-                WordBindingModel model = addWord.newWord;
+                ID = newID,
+                Name = model.Name,
+                HasGenders = model.HasGenders
+            };
 
-                //Add to the collection
-                controller.AddWord(model);
-            }
+            //Adding it to the bunch
+            languages.Add(newLanguage);
+            SaveChanges();
+
+            //Setting it as a chosen one
+            SetLanguage(newLanguage.ID);
         }
 
-        private void LanguageSelected(object sender, SelectionChangedEventArgs e)
+        //Add Word
+        public void AddWord(WordBindingModel model)
         {
-            if (pickLanguage.SelectedValue != null)
-            {
-                int id = (int)pickLanguage.SelectedValue;
-
-                controller.SetLanguage(id);
-
-                pickLanguage.ItemsSource = controller.GetLanguages();
-                words.ItemsSource = controller.GetWords();
-            }
+            current.AddWord(model);
         }
+
+        private void SaveChanges()
+        {
+            JSONParser<Language>.WriteJson(languages, Constants.FileFolder + Constants.MainFile);
+        }
+
+        private int GenerateId()
+        {
+            if (languages.Count == 0)
+                return 0;
+            else return languages[languages.Count - 1].ID + 1;
+        }
+        #endregion
+
+        #region Remove
+
+        //Remove Language
+
+        //Remove Word
+
+        #endregion
+
+        #region Change
+        //Change Word
+
+        #endregion
     }
 }
-
