@@ -41,6 +41,16 @@ namespace DataStorage
         {
             return current.GetWords();
         }
+
+        public ObservableCollection<Word> GetWords(string filter)
+        {
+            return current.GetWords(filter);
+        }
+
+        public WordBindingModel GetWord(int id)
+        {
+            return current.GetWord(id);
+        }
         #endregion
 
         #region Add
@@ -91,12 +101,19 @@ namespace DataStorage
         //Remove Language
 
         //Remove Word
+        public void RemoveWord(int id)
+        {
+            this.current.RemoveWord(id);
+        }
 
         #endregion
 
         #region Change
         //Change Word
-
+        public void ChangeWord(int id, WordBindingModel model)
+        {
+            this.current.ChangeWord(id, model);
+        }
         #endregion
     }
 }
