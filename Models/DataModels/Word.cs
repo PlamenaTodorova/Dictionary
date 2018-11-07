@@ -10,7 +10,8 @@ namespace Models.DataModels
     {
         Masculine,
         Feminine,
-        Neuter
+        Neuter,
+        None
     }
 
     public class Word : IComparable<Word>
